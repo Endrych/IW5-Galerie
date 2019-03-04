@@ -1,0 +1,13 @@
+﻿<Application x:Class="MyPhotoApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MyPhotoApp"
+             xmlns:converter="clr-namespace:MyPhotoApp.Converter"
+             StartupUri="Views/RootView.xaml">
+    <Application.Resources>
+        <local:ViewModelLocator x:Key="ViewModelLocator" />
+        <converter:ImageFormatConverter x:Key="ImageFormatConverter"></converter:ImageFormatConverter>
+        <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter"></converter:NullToVisibilityConverter>
+    </Application.Resources>
+</Application>
+

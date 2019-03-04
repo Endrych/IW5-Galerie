@@ -1,0 +1,281 @@
+﻿<UserControl x:Class="MyPhotoApp.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyPhotoApp.Views"
+             mc:Ignorable="d" 
+             xmlns:viewModels="clr-namespace:MyPhotoApp.ViewModels"
+             DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
+             d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=False}"
+             d:DesignHeight="600
+             " d:DesignWidth="800">
+    <UserControl.Resources>
+</UserControl.Resources>
+    <Grid Background="#383838" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="130"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Cursor="Hand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Source="../Content/logo.png" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Margin="20 20"></Image>
+            <Button Command="{Binding GetAllPicturesCommand}"  Grid.Row="1" Background="Transparent" Foreground="White"  BorderThickness="0"  
+                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" >MyPhoto (Show all pictures)</Button>
+            <Grid.InputBindings>
+                <MouseBinding Gesture="LeftClick" Command="{Binding GetAllPicturesCommand}" />
+            </Grid.InputBindings>
+        </Grid>
+        <TabControl Grid.Column="0" Grid.Row="1" Background="#383838" BorderThickness="0">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border>
+                                    <Grid>
+                                        <Grid>
+                                            <Border x:Name="myborder" CornerRadius="3,3,0,0" Background="#383838"/>
+                                        </Grid>
+                                        <ContentPresenter ContentSource="Header" 
+                                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="myborder" Property="Background" Value="#e0e0e0"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="myborder" Property="Background" Value="#3498DB"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Width="60" Background="#383838" >
+                <TabItem.Header >
+                    <StackPanel Background="#383838" Margin="3">
+                        <Image Height="30" Width="30" Source="../Content/logo.png" Margin="0,4,0,0"></Image>
+                        <TextBlock Foreground="White" Margin="8,0,0,0">Albums</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Margin="4,0,2,0" Text="Hledat: " Foreground="White"></TextBlock>
+                        <TextBox Width="130" Text="{Binding AlbumFilter, Mode = TwoWay, UpdateSourceTrigger = PropertyChanged}"/>
+                    </StackPanel>
+                    <ListView Grid.Row="1" SelectedItem="{Binding SelectedAlbum}"  ItemsSource="{Binding Albums}" HorizontalContentAlignment="Stretch" Background="#e0e0e0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="#2F2F2F" HorizontalAlignment="Stretch" Cursor="Hand">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <WrapPanel HorizontalAlignment="Stretch" Margin="0">
+                                        <Image Grid.Column="0" Source="../Content/logo.png" Height="25" Width="50"></Image>
+                                        <TextBlock Grid.Column="0" Foreground="White" FontSize="18" Text="{Binding Name}"></TextBlock>
+                                    </WrapPanel>
+                                    <Grid.InputBindings>
+                                        <MouseBinding Gesture="LeftClick" Command="{Binding ShowAlbumPictureCommand}" />
+                                    </Grid.InputBindings>
+                                </Grid>
+                            </DataTemplate>
+
+                        </ListView.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True" >
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="Foreground" Value="#3498DB" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListView>
+                    <StackPanel Grid.Row="2">
+                        <StackPanel HorizontalAlignment="Center" Margin="10 0"  Orientation="Horizontal">
+                            <Button Command="{Binding ShowAlbumPictureCommand}" Content="Show"></Button>
+                            <Button Command="{Binding NewAlbumCommand}" Content="New"></Button>
+                            <Button Command="{Binding RemoveAlbumCommand}" Content="Remove"></Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <Button Margin="20 5" Command="{Binding AddSelectedPictureCommand}" Content="Add Selected Picture"></Button>
+                            <Button Margin="20 5" Command="{Binding RemoveSelectedPictureCommand}" Content="Remove Selected Picture"></Button>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding SelectedAlbumDetail, Converter={StaticResource NullToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Foreground="White">Name:</Label>
+                                <TextBox Text="{Binding SelectedAlbumDetail.Name}" Width="120" Margin="10 0"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" >
+                                <Label Foreground="White">Description:</Label>
+                                <TextBox Text="{Binding SelectedAlbumDetail.Description}" Width="130" Height="70" Margin="15 0"></TextBox>
+                            </StackPanel>
+                            <Button Command="{Binding EditAlbumCommand}" Content="Save" Margin="50 10"></Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+                
+            </TabItem>
+            <TabItem Width="60" Background="#383838" BorderThickness="0">
+                <TabItem.Header>
+                    <StackPanel Background="#383838" Margin="3">
+                        <Image Height="30" Width="30" Source="../Content/person.png" Margin="0,4,0,0"></Image>
+                        <TextBlock  Foreground="White" Margin="7,0,0,0">Persons</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Margin="4,0,2,0" Text="Hledat: " Foreground="White"></TextBlock>
+                        <TextBox Width="130" Text="{Binding PersonFilter, Mode = TwoWay, UpdateSourceTrigger = PropertyChanged}"/>
+                    </StackPanel>
+
+                    <ListView Grid.Row="1" SelectedItem="{Binding SelectedPerson}"  ItemsSource="{Binding Persons}" HorizontalContentAlignment="Stretch" Background="#e0e0e0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="#2F2F2F" HorizontalAlignment="Stretch" Cursor="Hand">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <WrapPanel HorizontalAlignment="Stretch" Margin="0">
+                                        <Image Grid.Column="0" Source="../Content/person.png" Height="25" Width="50"></Image>
+                                        <TextBlock Grid.Column="1" Foreground="White" FontSize="18" Text="{Binding Name}"></TextBlock>
+                                    </WrapPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True" >
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="Foreground" Value="#3498DB" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListView>
+                    <StackPanel Grid.Row="2">
+                        <StackPanel HorizontalAlignment="Center" Margin="10 0"  Orientation="Horizontal">
+                            <Button Command="{Binding ShowPersonPictureCommand}" Content="Show"></Button>
+                            <Button Command="{Binding AddPersonCommand}" Content="New"></Button>
+                            <Button Command="{Binding RemovePersonCommand}" Content="Remove"></Button>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding SelectedPersonDetail, Converter={StaticResource NullToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Foreground="White">Firstname:</Label>
+                                <TextBox Text="{Binding SelectedPersonDetail.FirstName}" Width="97" Margin="10 0"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" >
+                                <Label Foreground="White">LastName:</Label>
+                                <TextBox Text="{Binding SelectedPersonDetail.LastName}" Width="100" Margin="5 0"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Label Foreground="White">Description:</Label>
+                                <TextBox Text="{Binding SelectedPersonDetail.Description}" Height="50" Margin="20 5"></TextBox>
+                            </StackPanel>
+                            <Button Command="{Binding EditPersonCommand}" Content="Save" Margin="50 10"></Button>
+                        </StackPanel>
+                    </StackPanel>
+               </Grid>
+            </TabItem>
+            <TabItem Background="#383838"  Width="56">
+                <TabItem.Header>
+                    <StackPanel Background="#383838" Margin="3">
+                        <Image Height="30" Margin="0,4,0,0" Width="40" Source="../Content/objects.png"/>
+                        <TextBlock Foreground="White" Margin="6,0,0,0">Objects</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Margin="4,0,2,0" Text="Hledat: " Foreground="White"></TextBlock>
+                        <TextBox Width="130" Text="{Binding ObjectFilter, Mode = TwoWay, UpdateSourceTrigger = PropertyChanged}"/>
+                    </StackPanel>
+
+                    <ListView Grid.Row="1" SelectedItem="{Binding SelectedObject}" ItemsSource="{Binding Objects}" Background="#e0e0e0" HorizontalContentAlignment="Stretch">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="#2F2F2F" HorizontalAlignment="Stretch" Cursor="Hand">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <WrapPanel HorizontalAlignment="Stretch" Margin="0">
+                                        <Image Grid.Column="0" Source="../Content/objects.png" Height="25" Width="50"></Image>
+                                        <TextBlock Grid.Column="1" Foreground="White" FontSize="18" Text="{Binding Name}"></TextBlock>
+                                    </WrapPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True" >
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="Foreground" Value="#3498DB" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListView>
+                    <StackPanel Grid.Row="2">
+                        <StackPanel HorizontalAlignment="Center" Margin="10 0"  Orientation="Horizontal">
+                            <Button Command="{Binding ShowObjectPictureCommand}" Content="Show"></Button>
+                            <Button Command="{Binding AddObjectCommand}" Content="New"></Button>
+                            <Button Command="{Binding RemoveObjectCommand}" Content="Remove"></Button>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding SelectedObjectDetail, Converter={StaticResource NullToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Foreground="White">Name:</Label>
+                                <TextBox Text="{Binding SelectedObjectDetail.Name}" Width="97" Margin="10 0"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Label Foreground="White">Description:</Label>
+                                <TextBox Text="{Binding SelectedObjectDetail.Description}" Height="50" Margin="20 5"></TextBox>
+                            </StackPanel>
+                            <Button Command="{Binding EditObjectCommand}" Content="Save" Margin="50 10"></Button>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Border Background="#383838"  Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" ></Border>
+        <local:PictureBrowserView   Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"></local:PictureBrowserView>
+    </Grid>
+</UserControl>

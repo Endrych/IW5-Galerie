@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{04695BFF-4D9A-4F4A-BD45-55EF55AA2516}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MyPhotoDb</RootNamespace>
+    <AssemblyName>MyPhotoDb</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Entities\AlbumEntity.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Entities\Base\PictureObjectEntity.cs" />
+    <Compile Include="Entities\ObjectEntity.cs" />
+    <Compile Include="Entities\PersonEntity.cs" />
+    <Compile Include="Entities\PictureEntity.cs" />
+    <Compile Include="Entities\PositionInPictureEntity.cs" />
+    <Compile Include="Enums\EntityImageFormat.cs" />
+    <Compile Include="Migrations\201804101344585_Update-Database.cs" />
+    <Compile Include="Migrations\201804101344585_Update-Database.Designer.cs">
+      <DependentUpon>201804101344585_Update-Database.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804111533431_add-album-collection-in-pictures.cs" />
+    <Compile Include="Migrations\201804111533431_add-album-collection-in-pictures.Designer.cs">
+      <DependentUpon>201804111533431_add-album-collection-in-pictures.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804190849381_Resolution-to-picture.cs" />
+    <Compile Include="Migrations\201804190849381_Resolution-to-picture.Designer.cs">
+      <DependentUpon>201804190849381_Resolution-to-picture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804191952332_add source to picture.cs" />
+    <Compile Include="Migrations\201804191952332_add source to picture.Designer.cs">
+      <DependentUpon>201804191952332_add source to picture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804292259057_DateTime-toPicture.cs" />
+    <Compile Include="Migrations\201804292259057_DateTime-toPicture.Designer.cs">
+      <DependentUpon>201804292259057_DateTime-toPicture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804301252009_ImageFormat-to-EntityImageFormat.cs" />
+    <Compile Include="Migrations\201804301252009_ImageFormat-to-EntityImageFormat.Designer.cs">
+      <DependentUpon>201804301252009_ImageFormat-to-EntityImageFormat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804301309539_nullable-datetime.cs" />
+    <Compile Include="Migrations\201804301309539_nullable-datetime.Designer.cs">
+      <DependentUpon>201804301309539_nullable-datetime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="MyPhotoDbContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201804101344585_Update-Database.resx">
+      <DependentUpon>201804101344585_Update-Database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804111533431_add-album-collection-in-pictures.resx">
+      <DependentUpon>201804111533431_add-album-collection-in-pictures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804190849381_Resolution-to-picture.resx">
+      <DependentUpon>201804190849381_Resolution-to-picture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191952332_add source to picture.resx">
+      <DependentUpon>201804191952332_add source to picture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804292259057_DateTime-toPicture.resx">
+      <DependentUpon>201804292259057_DateTime-toPicture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804301252009_ImageFormat-to-EntityImageFormat.resx">
+      <DependentUpon>201804301252009_ImageFormat-to-EntityImageFormat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804301309539_nullable-datetime.resx">
+      <DependentUpon>201804301309539_nullable-datetime.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
